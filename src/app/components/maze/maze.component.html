@@ -1,0 +1,6 @@
+<div *ngFor="let row of game.board">
+    <div *ngFor="let tile of row" [style.background-position]="tile.background" [style.left]="tileLeft(tile)"
+         [style.top]="tileTop(tile)" class="tile"></div>
+</div>
+
+<div *ngFor="let player of game.players" [ngStyle]="styleOfPlayer(player)" class="player"></div>

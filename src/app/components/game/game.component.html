@@ -1,0 +1,8 @@
+<div class="fullscreen row">
+    <div class="statScreenRow">
+        <app-player *ngFor="let player of game.players; let i = index" [index]="i" [player]="player"></app-player>
+    </div>
+    <div class="mazeScreen">
+        <app-maze></app-maze>
+    </div>
+</div>

@@ -17,6 +17,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "alwaysStrict": true,
+    "downlevelIteration": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true
   }
 }

@@ -1,0 +1,7 @@
+<div [class.focus]="game.playerOnTurn !== index" [ngStyle]="style()" class="playerState">
+    <div [style.background-position]="spritePos()" class="sprite"></div>
+    <div class="name gamefont">{{player.name}}</div>
+    <div class="songcounter">
+        <div *ngFor="let i of songs()" class="songcount"></div>
+    </div>
+</div>
