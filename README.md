@@ -16,9 +16,6 @@ Het project runt nu op `localhost:4200`. Het is geschreven om full-screen op een
   - Bij het afgraven van een stuk grond heeft de speler een kans om een plaats in de afspeellijst te vinden
   - Bij het lopen over de trap gaan alle spelers naar een nieuwe ruimte
   - Als de speler niets meer kan of wil doen, kan hij/zij op enter drukken om de volgende speler de beurt te geven
-  
-## TODO
-
   - Powerups:
     - Een extra AP (permanent)
-    - Verdubbel (in deze ruimte) de kans om een plaats in de afspeellijst te vinden
+    - Verdubbel de kans om een plaats in de afspeellijst te vinden (tot verlaten ruimte)

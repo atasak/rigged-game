@@ -1,4 +1,4 @@
-import {COST}             from '../config';
+import {INITIALAP}        from '../config';
 import {PowerUp}          from './powerups';
 import {ParsedSpriteInfo} from './spritesheetinfo';
 
@@ -8,7 +8,7 @@ export class Player {
     chanceModifier     = 1;
     roomChanceModifier = 1;
     songs: true[]      = [];
-    ap                 = COST;
+    ap                 = INITIALAP;
 
     powerups: PowerUp[]    = [];
     powerupTips: PowerUp[] = [];

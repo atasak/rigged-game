@@ -1,6 +1,6 @@
-import {ipc, MAZEHEIGHT, MAZEWIDTH, minimumOpenFields, pcd, SOULS} from '../config';
-import {getRandom, init, twoDimensionalFind}                       from '../util/array';
-import {Tile, TileType}                                            from './tile';
+import {ipc, MAZEHEIGHT, MAZEWIDTH, MINIMUMDIGGABLEFIELDS, pcd, POWERUPS} from '../config';
+import {getRandom, init, twoDimensionalFind}                              from '../util/array';
+import {Tile, TileType}                                                   from './tile';
 
 export function createMaze (players: number): [Tile[][], [number, number][]] {
     const board = init(MAZEWIDTH, () => init(MAZEHEIGHT, () => TileType.Undefined));
@@ -18,7 +18,7 @@ export function createMaze (players: number): [Tile[][], [number, number][]] {
 }
 
 function addSoulBlocks (board: TileType[][]) {
-    for (let i = 0; i < SOULS; i++) {
+    for (let i = 0; i < POWERUPS; i++) {
         const x     = Math.floor(Math.random() * MAZEWIDTH);
         const y     = Math.floor(Math.random() * MAZEHEIGHT);
         board[x][y] = TileType.Powerup;
@@ -65,7 +65,7 @@ function mazify (board: TileType[][], queue: [number, number][]) {
 
         // @ts-ignore
         const closedFields = twoDimensionalFind(board, TileType.Closed);
-        if (closedFields.length > minimumOpenFields)
+        if (closedFields.length > MINIMUMDIGGABLEFIELDS)
             return;
 
         for (let i = 0; i < 4; i++)

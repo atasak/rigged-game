@@ -1,13 +1,13 @@
-import {Injectable}                                                         from '@angular/core';
-import {Router}                                                             from '@angular/router';
-import {CHANCEMODIFIER, NEXTROOMTIME, SONGCHANCE, SONGMODALTIME, TURNDELAY} from '../config';
-import {dirFromEvent}                                                       from '../util/directional';
-import {Maybe}                                                              from '../util/types';
-import {createMaze}                                                         from './maze';
-import {Player}                                                             from './player';
-import {powerUps}                                                           from './powerups';
-import {ParsedSpriteInfo, players, songMarker, staircase}                   from './spritesheetinfo';
-import {Tile, TileType}                                                     from './tile';
+import {Injectable}                                                             from '@angular/core';
+import {Router}                                                                 from '@angular/router';
+import {CHANCEMODIFIER, NEXTROOMTIME, SONGBASECHANCE, SONGMODALTIME, TURNDELAY} from '../config';
+import {dirFromEvent}                                                           from '../util/directional';
+import {Maybe}                                                                  from '../util/types';
+import {createMaze}                                                             from './maze';
+import {Player}                                                                 from './player';
+import {powerUps}                                                               from './powerups';
+import {ParsedSpriteInfo, players, songMarker, staircase}                       from './spritesheetinfo';
+import {Tile, TileType}                                                         from './tile';
 
 @Injectable({
                 providedIn: 'root',
@@ -22,11 +22,11 @@ export class GameService {
 
     showModal                   = false;
     modalIcon: ParsedSpriteInfo = songMarker;
-    modalText1                  = '';
-    modalText2                  = '';
+    modalText1                  = 'Hoi, ik ben een modal';
+    modalText2                  = 'Blijkbaar ben ik kapot';
 
     constructor (private router: Router) {
-        this.start(['Stefan', 'Bas', 'Berend', 'Kas', 'Bart', 'Niek']);
+        //this.start(['Stefan', 'Bas', 'Berend', 'Kas', 'Bart', 'Niek']);
     }
 
     start (names: string[]) {
@@ -105,7 +105,7 @@ export class GameService {
     }
 
     maybeChooseSong (player: Player) {
-        const chance = SONGCHANCE * player.chanceModifier * player.roomChanceModifier;
+        const chance = SONGBASECHANCE * player.chanceModifier * player.roomChanceModifier;
         if (Math.random() > chance)
             return;
         const dpc = player.chanceModifier * CHANCEMODIFIER;
