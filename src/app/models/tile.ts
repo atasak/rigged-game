@@ -1,5 +1,5 @@
-import {TILEHEIGHT, TILEWIDTH}                                                                     from '../config';
-import {cobble, obsidian, ParsedSpriteInfo, parseTileInfo, sand, soulStone, SpriteInfo, staircase} from './spritesheetinfo';
+import {TILEHEIGHT, TILEWIDTH}                                                                                 from '../config';
+import {cobble, obsidian, ParsedSpriteInfo, parseTileInfo, sand, songMarker, soulStone, SpriteInfo, staircase} from './spritesheetinfo';
 
 export enum TileType {
     Undefined,
@@ -20,7 +20,7 @@ const tileSprites: SpriteInfo[] = [
 ];
 
 export class Tile {
-    info: ParsedSpriteInfo;
+    info: ParsedSpriteInfo = songMarker;
     background: string;
 
     constructor (public type: TileType, public x: number, public y: number) {

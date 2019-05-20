@@ -27,9 +27,4 @@ export class PlayerComponent implements OnInit {
     spritePos () {
         return `-${players[this.index].col * 72}px -${players[this.index].row * 72}px`;
     }
-
-    * songs () {
-        for (let i = 0; i < this.player.songs; i++)
-            yield i;
-    }
 }

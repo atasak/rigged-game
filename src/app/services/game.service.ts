@@ -1,13 +1,13 @@
-import {Injectable}                                  from '@angular/core';
-import {Router}                                      from '@angular/router';
-import {noop}                                        from 'rxjs';
-import {CHANCEMODIFIER, COST, SONGCHANCE, TURNDELAY} from '../config';
-import {createMaze}                                  from '../logic/maze';
-import {Player}                                      from '../models/player';
-import {players}                                     from '../models/spritesheetinfo';
-import {Tile, TileType}                              from '../models/tile';
-import {dirFromEvent}                                from '../util/directional';
-import {Maybe}                                       from '../util/types';
+import {Injectable}                            from '@angular/core';
+import {Router}                                from '@angular/router';
+import {noop}                                  from 'rxjs';
+import {CHANCEMODIFIER, SONGCHANCE, TURNDELAY} from '../config';
+import {createMaze}                            from '../logic/maze';
+import {Player}                                from '../models/player';
+import {players}                               from '../models/spritesheetinfo';
+import {Tile, TileType}                        from '../models/tile';
+import {dirFromEvent}                          from '../util/directional';
+import {Maybe}                                 from '../util/types';
 
 @Injectable({
                 providedIn: 'root',
@@ -18,12 +18,12 @@ export class GameService {
 
     locked       = false;
     playerOnTurn = 0;
-    costLeft     = 0;
+    apLeft       = 0;
 
     songModal = false;
 
     constructor (private router: Router) {
-        this.start(['Stefan', 'Bas', 'Berend', 'Kas', 'Bart', 'Niek', '1', '2', '3', '4', '5', '6']);
+        this.start(['Stefan', 'Bas', 'Berend', 'Kas', 'Bart', 'Niek']);
     }
 
     start (names: string[]) {
@@ -44,8 +44,8 @@ export class GameService {
     }
 
     nextTurn () {
-        this.locked   = false;
-        this.costLeft = COST;
+        this.locked = false;
+        this.apLeft = this.players[this.playerOnTurn].ap;
     }
 
     keyDown (event: KeyboardEvent) {
@@ -63,13 +63,13 @@ export class GameService {
             return;
         }
 
-        const gotoTile                               = this.board[player.x + dx][player.y + dy];
-        const {move, cost, end, songChance, powerUp} = movementAction(gotoTile);
+        const gotoTile                                 = this.board[player.x + dx][player.y + dy];
+        const {move, apCost, end, songChance, powerUp} = movementAction(gotoTile);
 
-        if (!move || this.costLeft < cost)
+        if (!move || this.apLeft < apCost)
             return;
 
-        this.handleMovement(player, dx, dy, cost);
+        this.handleMovement(player, dx, dy, apCost);
 
         if (end) {
             setTimeout(() => this.restart(), 1000);
@@ -95,7 +95,7 @@ export class GameService {
         setTimeout(() => {
             this.locked = false;
         }, 200);
-        this.costLeft -= cost;
+        this.apLeft -= cost;
     }
 
     maybeChooseSong (player: Player) {
@@ -107,14 +107,14 @@ export class GameService {
         const doc = dpc / (this.players.length);
         for (const p of this.players)
             p.chanceModifier += doc;
-        player.songs++;
+        player.songs.push(true);
         this.songModal = true;
     }
 }
 
 class MA {
     move       = false;
-    cost       = 0;
+    apCost     = 0;
     end        = false;
     songChance = false;
     powerUp    = false;
@@ -122,20 +122,19 @@ class MA {
     constructor (init: Maybe<MA>) {
         for (const key in init)
             if (init.hasOwnProperty(key))
-            // @ts-ignore
-                this[key] = init[key];
+                this[key as keyof MA] = init[key as keyof Maybe<MA>]!;
     }
 }
 
 
 function movementAction (tile: Tile): MA {
     if (tile.type === TileType.Closed)
-        return new MA({move: true, cost: 4, songChance: true});
+        return new MA({move: true, apCost: 4, songChance: true});
     if (tile.type === TileType.Open)
-        return new MA({move: true, cost: 1});
+        return new MA({move: true, apCost: 1});
     if (tile.type === TileType.Powerup)
-        return new MA({move: true, cost: 4, powerUp: true});
+        return new MA({move: true, apCost: 4, powerUp: true});
     if (tile.type === TileType.NextLevel)
-        return new MA({move: true, cost: 1, end: true});
+        return new MA({move: true, apCost: 1, end: true});
     return new MA({});
 }
