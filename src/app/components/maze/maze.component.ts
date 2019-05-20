@@ -1,8 +1,8 @@
 import {Component}             from '@angular/core';
 import {TILEHEIGHT, TILEWIDTH} from '../../config';
-import {Player}                from '../../models/player';
-import {Tile}                  from '../../models/tile';
-import {GameService}           from '../../services/game.service';
+import {GameService}           from '../../logic/game.service';
+import {Player}                from '../../logic/player';
+import {Tile}                  from '../../logic/tile';
 
 @Component({
                selector   : 'app-maze',

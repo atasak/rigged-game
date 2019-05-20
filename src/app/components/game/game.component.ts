@@ -1,5 +1,5 @@
 import {Component, HostListener} from '@angular/core';
-import {GameService}             from '../../services/game.service';
+import {GameService}             from '../../logic/game.service';
 
 @Component({
                selector   : 'app-game',
@@ -16,7 +16,11 @@ export class GameComponent {
         this.game.keyDown(event);
     }
 
-    modalShow (): string {
-        return this.game.songModal ? 'block' : 'none';
+    modalShow (): number {
+        return this.game.showModal ? 1 : 0;
+    }
+
+    modalIconBackground (): string {
+        return `-${this.game.modalIcon.col * 64}px -${this.game.modalIcon.row * 64}px`;
     }
 }

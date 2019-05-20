@@ -3,4 +3,6 @@
          [style.top]="tileTop(tile)" class="tile"></div>
 </div>
 
-<div *ngFor="let player of game.players" [ngStyle]="styleOfPlayer(player)" class="player"></div>
+<div *ngFor="let player of game.players" [ngStyle]="styleOfPlayer(player)" class="player">
+    <app-powerup *ngFor="let powerup of player.powerupTips" [powerUp]="powerup"></app-powerup>
+</div>

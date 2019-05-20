@@ -5,7 +5,7 @@
   - `npm i -g typescript @angular/cli`
   - `ng serve`
   
-Het project runt nu op `localhost:4200`
+Het project runt nu op `localhost:4200`. Het is geschreven om full-screen op een full-HD (1920x1080) te spelen. 
 
 # The game
 

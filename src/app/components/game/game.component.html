@@ -7,15 +7,15 @@
     </div>
 </div>
 
-<div [style.display]="modalShow()" class="modal">
+<div [style.opacity]="modalShow()" class="modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body text-center">
-                <div class="emblem"></div>
+                <div [style.background-position]="modalIconBackground()" class="emblem"></div>
                 <h3 class="modal-title">
-                    Choose a song!
+                    {{game.modalText1}}
                 </h3>
-                <h1 class="modal-title">{{game.players[game.playerOnTurn].name}}</h1>
+                <h1 class="modal-title">{{game.modalText2}}</h1>
             </div>
         </div>
     </div>

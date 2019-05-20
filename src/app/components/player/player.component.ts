@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Player}                   from '../../models/player';
-import {players}                  from '../../models/spritesheetinfo';
-import {GameService}              from '../../services/game.service';
+import {GameService}              from '../../logic/game.service';
+import {Player}                   from '../../logic/player';
+import {PowerUp}                  from '../../logic/powerups';
+import {players}                  from '../../logic/spritesheetinfo';
 
 @Component({
                selector   : 'app-player',
@@ -26,5 +27,13 @@ export class PlayerComponent implements OnInit {
 
     spritePos () {
         return `-${players[this.index].col * 72}px -${players[this.index].row * 72}px`;
+    }
+
+    playerAP () {
+        return this.game.playerOnTurn === this.index ? this.game.apLeft : this.player.ap;
+    }
+
+    powerupBackground (powerup: PowerUp): string {
+        return `-${powerup.icon.col * 32}px -${powerup.icon.row * 32}px`;
     }
 }

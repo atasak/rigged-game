@@ -1,13 +1,13 @@
-import {Injectable}                            from '@angular/core';
-import {Router}                                from '@angular/router';
-import {noop}                                  from 'rxjs';
-import {CHANCEMODIFIER, SONGCHANCE, TURNDELAY} from '../config';
-import {createMaze}                            from '../logic/maze';
-import {Player}                                from '../models/player';
-import {players}                               from '../models/spritesheetinfo';
-import {Tile, TileType}                        from '../models/tile';
-import {dirFromEvent}                          from '../util/directional';
-import {Maybe}                                 from '../util/types';
+import {Injectable}                                                         from '@angular/core';
+import {Router}                                                             from '@angular/router';
+import {CHANCEMODIFIER, NEXTROOMTIME, SONGCHANCE, SONGMODALTIME, TURNDELAY} from '../config';
+import {dirFromEvent}                                                       from '../util/directional';
+import {Maybe}                                                              from '../util/types';
+import {createMaze}                                                         from './maze';
+import {Player}                                                             from './player';
+import {powerUps}                                                           from './powerups';
+import {ParsedSpriteInfo, players, songMarker, staircase}                   from './spritesheetinfo';
+import {Tile, TileType}                                                     from './tile';
 
 @Injectable({
                 providedIn: 'root',
@@ -16,11 +16,14 @@ export class GameService {
     players: Player[] = [];
     board: Tile[][]   = [];
 
-    locked       = false;
+    locked       = 0;
     playerOnTurn = 0;
     apLeft       = 0;
 
-    songModal = false;
+    showModal                   = false;
+    modalIcon: ParsedSpriteInfo = songMarker;
+    modalText1                  = '';
+    modalText2                  = '';
 
     constructor (private router: Router) {
         this.start(['Stefan', 'Bas', 'Berend', 'Kas', 'Bart', 'Niek']);
@@ -34,7 +37,8 @@ export class GameService {
         this.nextTurn();
     }
 
-    restart () {
+    async nextRoom () {
+        await this.modal(staircase, 'Next room', 'Walking down....', NEXTROOMTIME);
         const [board, playerpos] = createMaze(this.players.length);
         this.board               = board;
         for (let i = 0; i < playerpos.length; i++) {
@@ -44,24 +48,24 @@ export class GameService {
     }
 
     nextTurn () {
-        this.locked = false;
-        this.apLeft = this.players[this.playerOnTurn].ap;
+        this.locked++;
+        this.playerOnTurn = (this.playerOnTurn + 1) % this.players.length;
+        this.apLeft       = this.players[this.playerOnTurn].ap;
         for (const player of this.players)
             player.resetRoom();
+        setTimeout(() => {
+            this.locked--;
+        }, TURNDELAY);
     }
 
     keyDown (event: KeyboardEvent) {
-        if (this.locked)
+        if (this.locked !== 0)
             return;
         const player   = this.players[this.playerOnTurn];
         const [dx, dy] = dirFromEvent(event);
         if (dx === 0 && dy === 0) {
-            if (event.key === 'Enter') {
-                this.locked       = true;
-                this.playerOnTurn = (this.playerOnTurn + 1) % this.players.length;
-                this.songModal    = false;
-                setTimeout(() => this.nextTurn(), TURNDELAY);
-            }
+            if (event.key === 'Enter')
+                this.nextTurn();
             return;
         }
 
@@ -74,7 +78,7 @@ export class GameService {
         this.handleMovement(player, dx, dy, apCost);
 
         if (end) {
-            setTimeout(() => this.restart(), 1000);
+            this.nextRoom();
         }
 
         if (songChance) {
@@ -82,7 +86,7 @@ export class GameService {
         }
 
         if (powerUp) {
-            noop();
+            this.powerUp();
         }
     }
 
@@ -90,18 +94,18 @@ export class GameService {
         player.x += dx;
         player.y += dy;
         const tile = this.board[player.x][player.y];
-        if (tile.type === TileType.Closed)
+        if (tile.type === TileType.Closed || tile.type === TileType.Powerup)
             tile.type = TileType.Open;
         tile.updateBackground();
-        this.locked = true;
+        this.locked++;
         setTimeout(() => {
-            this.locked = false;
+            this.locked--;
         }, 200);
         this.apLeft -= cost;
     }
 
     maybeChooseSong (player: Player) {
-        const chance = SONGCHANCE * player.chanceModifier;
+        const chance = SONGCHANCE * player.chanceModifier * player.roomChanceModifier;
         if (Math.random() > chance)
             return;
         const dpc = player.chanceModifier * CHANCEMODIFIER;
@@ -110,7 +114,33 @@ export class GameService {
         for (const p of this.players)
             p.chanceModifier += doc;
         player.songs.push(true);
-        this.songModal = true;
+
+        this.modal(songMarker, 'Choose a song!', this.players[this.playerOnTurn].name, SONGMODALTIME);
+    }
+
+    powerUp () {
+        const currentPlayer = this.players[this.playerOnTurn];
+        const powerUpId     = Math.floor(Math.random() * powerUps.length);
+        const powerup       = powerUps[powerUpId];
+        powerup.logic(currentPlayer);
+        currentPlayer.powerups.push(powerup);
+        currentPlayer.powerupTips.push(powerup);
+        setTimeout(() => currentPlayer.powerupTips.shift(), 2000);
+    }
+
+    modal (icon: ParsedSpriteInfo, text1: string, text2: string, duration: number) {
+        return new Promise((resolve: () => void) => {
+            this.modalIcon  = icon;
+            this.modalText1 = text1;
+            this.modalText2 = text2;
+            this.showModal  = true;
+            this.locked++;
+            setTimeout(() => {
+                this.showModal = false;
+                this.locked--;
+                resolve();
+            }, duration);
+        });
     }
 }
 

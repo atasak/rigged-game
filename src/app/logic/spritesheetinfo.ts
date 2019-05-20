@@ -81,8 +81,18 @@ export const players = [
 ];
 
 export const songMarker = {
-    col: 17,
-    row: 47,
+    col: 53,
+    row: 22,
+};
+
+export const songModifierMarker = {
+    col: 52,
+    row: 22,
+};
+
+export const apModifierMarker = {
+    col: 10,
+    row: 42,
 };
 
 export function parseTileInfo (tileInfo: SpriteInfo): ParsedSpriteInfo[] {

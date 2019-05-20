@@ -1,6 +1,6 @@
 import {ipc, MAZEHEIGHT, MAZEWIDTH, minimumOpenFields, pcd, SOULS} from '../config';
-import {Tile, TileType}                                            from '../models/tile';
 import {getRandom, init, twoDimensionalFind}                       from '../util/array';
+import {Tile, TileType}                                            from './tile';
 
 export function createMaze (players: number): [Tile[][], [number, number][]] {
     const board = init(MAZEWIDTH, () => init(MAZEHEIGHT, () => TileType.Undefined));

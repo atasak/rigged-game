@@ -1,23 +1,23 @@
 import {Component}   from '@angular/core';
-import {GameService} from '../../services/game.service';
+import {GameService} from '../../logic/game.service';
 
 @Component({
-             selector   : 'app-setup',
-             templateUrl: './setup.component.html',
-             styleUrls  : ['./setup.component.sass'],
+               selector   : 'app-setup',
+               templateUrl: './setup.component.html',
+               styleUrls  : ['./setup.component.sass'],
            })
 export class SetupComponent {
 
-  names: string[] = [];
+    names: string[] = [];
 
-  constructor (private game: GameService) {
-  }
+    constructor (private game: GameService) {
+    }
 
-  newName () {
-    this.names.push('');
-  }
+    newName () {
+        this.names.push('');
+    }
 
-  startGame () {
-    this.game.start(this.names)
-  }
+    startGame () {
+        this.game.start(this.names);
+    }
 }

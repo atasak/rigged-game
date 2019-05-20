@@ -22,3 +22,7 @@ export const SONGCHANCE = .1;
 export const CHANCEMODIFIER = .5;
 
 export const TURNDELAY = 500;
+
+export const SONGMODALTIME = 8000;
+
+export const NEXTROOMTIME = 2000;
