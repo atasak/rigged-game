@@ -1,6 +1,6 @@
-import {INITIALAP}        from '../config';
-import {PowerUp}          from './powerups';
-import {ParsedSpriteInfo} from './spritesheetinfo';
+import {INITIALAP}                            from '../config';
+import {PowerUp}                              from './powerups';
+import {ParsedSpriteInfo, songModifierMarker} from './spritesheetinfo';
 
 export class Player {
     x: number;
@@ -20,5 +20,6 @@ export class Player {
 
     resetRoom () {
         this.roomChanceModifier = 1;
+        this.powerups           = this.powerups.filter((powerup: PowerUp) => powerup.icon !== songModifierMarker);
     }
 }

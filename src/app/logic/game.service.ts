@@ -46,14 +46,14 @@ export class GameService {
             this.players[i].x = playerpos[i][0];
             this.players[i].y = playerpos[i][1];
         }
+        for (const player of this.players)
+            player.resetRoom();
     }
 
     nextTurn () {
         this.locked++;
         this.playerOnTurn = (this.playerOnTurn + 1) % this.players.length;
         this.apLeft       = this.players[this.playerOnTurn].ap;
-        for (const player of this.players)
-            player.resetRoom();
         setTimeout(() => {
             this.locked--;
         }, TURNDELAY);

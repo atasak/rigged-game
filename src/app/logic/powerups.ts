@@ -1,3 +1,4 @@
+import {APPOWERUPPLUS, CHANCEPOWERUPTIMES}                      from '../config';
 import {Player}                                                 from './player';
 import {apModifierMarker, ParsedSpriteInfo, songModifierMarker} from './spritesheetinfo';
 
@@ -8,11 +9,11 @@ export interface PowerUp {
 }
 
 function extraAP (player: Player) {
-    player.ap++;
+    player.ap += APPOWERUPPLUS;
 }
 
 function doubleChance (player: Player) {
-    player.roomChanceModifier *= 2;
+    player.roomChanceModifier *= CHANCEPOWERUPTIMES;
 }
 
 export const powerUps: PowerUp[] = [

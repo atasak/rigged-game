@@ -11,7 +11,13 @@ export const MINIMUMDIGGABLEFIELDS = 300;
 
 // Number of powerups in each game. This number may be smaller,
 // because the powerups are generated before the border and the centerpiece.
-export const POWERUPS = 5;
+export const POWERUPS = 8;
+
+// AP powerup constant
+export const APPOWERUPPLUS = 1;
+
+// Chance powerup constant
+export const CHANCEPOWERUPTIMES = 2;
 
 // Initial number of AP for each player
 export const INITIALAP = 4;
