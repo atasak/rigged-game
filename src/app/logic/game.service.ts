@@ -46,6 +46,8 @@ export class GameService {
     nextTurn () {
         this.locked = false;
         this.apLeft = this.players[this.playerOnTurn].ap;
+        for (const player of this.players)
+            player.resetRoom();
     }
 
     keyDown (event: KeyboardEvent) {
