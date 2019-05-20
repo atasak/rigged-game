@@ -16,4 +16,7 @@ export class GameComponent {
         this.game.keyDown(event);
     }
 
+    modalShow (): string {
+        return this.game.songModal ? 'block' : 'none';
+    }
 }

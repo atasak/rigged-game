@@ -6,3 +6,17 @@
         <app-maze></app-maze>
     </div>
 </div>
+
+<div [style.display]="modalShow()" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="emblem"></div>
+                <h3 class="modal-title">
+                    Choose a song!
+                </h3>
+                <h1 class="modal-title">{{game.players[game.playerOnTurn].name}}</h1>
+            </div>
+        </div>
+    </div>
+</div>

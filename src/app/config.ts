@@ -13,10 +13,12 @@ export const ipc = .5;
 
 export const minimumOpenFields = 300;
 
-export const SOULS = 10;
+export const SOULS = 5;
 
 export const COST = 4;
 
-export const SONGCHANCE = 1;
+export const SONGCHANCE = .1;
 
 export const CHANCEMODIFIER = .5;
+
+export const TURNDELAY = 500;

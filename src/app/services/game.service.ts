@@ -1,13 +1,13 @@
-import {Injectable}                       from '@angular/core';
-import {Router}                           from '@angular/router';
-import {noop}                             from 'rxjs';
-import {CHANCEMODIFIER, COST, SONGCHANCE} from '../config';
-import {createMaze}                       from '../logic/maze';
-import {Player}                           from '../models/player';
-import {players}                          from '../models/spritesheetinfo';
-import {Tile, TileType}                   from '../models/tile';
-import {dirFromEvent}                     from '../util/directional';
-import {Maybe}                            from '../util/types';
+import {Injectable}                                  from '@angular/core';
+import {Router}                                      from '@angular/router';
+import {noop}                                        from 'rxjs';
+import {CHANCEMODIFIER, COST, SONGCHANCE, TURNDELAY} from '../config';
+import {createMaze}                                  from '../logic/maze';
+import {Player}                                      from '../models/player';
+import {players}                                     from '../models/spritesheetinfo';
+import {Tile, TileType}                              from '../models/tile';
+import {dirFromEvent}                                from '../util/directional';
+import {Maybe}                                       from '../util/types';
 
 @Injectable({
                 providedIn: 'root',
@@ -19,6 +19,8 @@ export class GameService {
     locked       = false;
     playerOnTurn = 0;
     costLeft     = 0;
+
+    songModal = false;
 
     constructor (private router: Router) {
         this.start(['Stefan', 'Bas', 'Berend', 'Kas', 'Bart', 'Niek', '1', '2', '3', '4', '5', '6']);
@@ -55,7 +57,8 @@ export class GameService {
             if (event.key === 'Enter') {
                 this.locked       = true;
                 this.playerOnTurn = (this.playerOnTurn + 1) % this.players.length;
-                setTimeout(() => this.nextTurn(), 1000);
+                this.songModal    = false;
+                setTimeout(() => this.nextTurn(), TURNDELAY);
             }
             return;
         }
@@ -84,8 +87,10 @@ export class GameService {
     handleMovement (player: Player, dx: number, dy: number, cost: number) {
         player.x += dx;
         player.y += dy;
-        this.board[player.x][player.y].type = TileType.Open;
-        this.board[player.x][player.y].updateBackground();
+        const tile = this.board[player.x][player.y];
+        if (tile.type === TileType.Closed)
+            tile.type = TileType.Open;
+        tile.updateBackground();
         this.locked = true;
         setTimeout(() => {
             this.locked = false;
@@ -103,6 +108,7 @@ export class GameService {
         for (const p of this.players)
             p.chanceModifier += doc;
         player.songs++;
+        this.songModal = true;
     }
 }
 
