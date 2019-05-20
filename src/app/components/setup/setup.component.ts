@@ -20,4 +20,8 @@ export class SetupComponent {
     startGame () {
         this.game.start(this.names);
     }
+
+    tracker (index: number): number {
+        return index;
+    }
 }

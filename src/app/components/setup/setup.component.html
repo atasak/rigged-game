@@ -5,7 +5,7 @@
                 <h5 class="modal-title">Player names</h5>
             </div>
             <div class="modal-body">
-                <input (ngModelChange)="names[i] = $event" *ngFor="let name of names; let i = index" [ngModel]="name"
+                <input *ngFor="let _ of names; let i = index; trackBy:tracker" [(ngModel)]="names[i]"
                        class="form-control" type="text">
             </div>
             <div class="modal-footer">

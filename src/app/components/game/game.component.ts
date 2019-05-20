@@ -17,7 +17,7 @@ export class GameComponent {
     }
 
     modalShow (): number {
-        return this.game.showModal ? 1 : 1;
+        return this.game.showModal ? 1 : 0;
     }
 
     modalIconBackground (): string {

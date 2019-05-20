@@ -17,7 +17,7 @@ export class GameService {
     board: Tile[][]   = [];
 
     locked       = 0;
-    playerOnTurn = 0;
+    playerOnTurn = -1;
     apLeft       = 0;
 
     showModal                   = false;
@@ -26,6 +26,7 @@ export class GameService {
     modalText2                  = 'Blijkbaar ben ik kapot';
 
     constructor (private router: Router) {
+        this.router.navigateByUrl('setup');
         //this.start(['Stefan', 'Bas', 'Berend', 'Kas', 'Bart', 'Niek']);
     }
 
