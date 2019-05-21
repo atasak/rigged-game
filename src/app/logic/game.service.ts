@@ -26,8 +26,8 @@ export class GameService {
     modalText2                  = 'Blijkbaar ben ik kapot';
 
     constructor (private router: Router) {
-        this.router.navigateByUrl('setup');
-        //this.start(['Stefan', 'Bas', 'Berend', 'Kas', 'Bart', 'Niek']);
+        // this.router.navigateByUrl('setup');
+        this.start(['Stefan', 'Bas', 'Berend', 'Kas', 'Bart', 'Niek']);
     }
 
     start (names: string[]) {
@@ -46,8 +46,6 @@ export class GameService {
             this.players[i].x = playerpos[i][0];
             this.players[i].y = playerpos[i][1];
         }
-        for (const player of this.players)
-            player.resetRoom();
     }
 
     nextTurn () {
@@ -106,7 +104,7 @@ export class GameService {
     }
 
     maybeChooseSong (player: Player) {
-        const chance = SONGBASECHANCE * player.chanceModifier * player.roomChanceModifier;
+        const chance = SONGBASECHANCE * player.chanceModifier;
         if (Math.random() > chance)
             return;
         const dpc = player.chanceModifier * CHANCEMODIFIER;

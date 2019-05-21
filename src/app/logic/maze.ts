@@ -98,9 +98,8 @@ function mazifyPass (board: TileType[][], queue: [number, number][]) {
             board[x][y] = TileType.Closed;
         });
 
-        if (Math.random() > ipc) {
+        if (Math.random() > ipc)
             continue;
-        }
 
         forSurrounding(tile[0], tile[1], (x: number, y: number) => {
             if (board[x][y] === TileType.Undefined)

@@ -13,7 +13,7 @@ function extraAP (player: Player) {
 }
 
 function doubleChance (player: Player) {
-    player.roomChanceModifier *= CHANCEPOWERUPTIMES;
+    player.chanceModifier *= CHANCEPOWERUPTIMES;
 }
 
 export const powerUps: PowerUp[] = [
