@@ -104,14 +104,13 @@ export class GameService {
     }
 
     maybeChooseSong (player: Player) {
-        const chance = SONGBASECHANCE * player.chanceModifier;
+        const chance = SONGBASECHANCE * player.chanceModifier * player.chanceModifier;
         if (Math.random() > chance)
             return;
-        const dpc = player.chanceModifier * CHANCEMODIFIER;
-        player.chanceModifier -= dpc;
-        const doc = dpc / (this.players.length);
+        const playerPlus = CHANCEMODIFIER / this.players.length;
+        player.chanceModifier -= CHANCEMODIFIER + playerPlus;
         for (const p of this.players)
-            p.chanceModifier += doc;
+            p.chanceModifier += playerPlus;
         player.songs.push(true);
 
         this.modal(songMarker, 'Choose a song!', this.players[this.playerOnTurn].name, SONGMODALTIME);
